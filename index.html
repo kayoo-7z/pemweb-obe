@@ -20,9 +20,9 @@
   <main id="main">
     <section id="beranda">
       <h2>Beranda</h2>
-      <!-- Gambar Informatif -->
+      <!-- Alt 1: Informatif -->
       <img src="laboratorium.jpg" alt="Suasana ruang Laboratorium Teknik Komputer">
-      <!-- Gambar Dekoratif -->
+      <!-- Alt 2: Dekoratif -->
       <img src="pattern.png" alt="">
       <p>Portal inventaris laboratorium.</p>
     </section>
@@ -31,17 +31,27 @@
       <h2>Layanan Inventaris</h2>
       <article>
         <h3>Pencatatan Peralatan</h3>
-        <!-- Gambar Informatif -->
+        <!-- Alt 3: Informatif -->
         <img src="peralatan.jpg" alt="Papan mikrokontroler Arduino Uno dalam kondisi baik">
         <p>Mencatat data alat dan status kondisi.</p>
       </article>
-      <!-- Gambar Dekoratif -->
+      <!-- Alt 4: Dekoratif -->
       <img src="divider.png" alt="">
+      
+      <!-- Alt 5: Gambar sebagai Link -->
+      <p>Hubungi admin via WhatsApp:</p>
+      <a href="https://wa.me/628123456789">
+        <img src="icon-wa.png" alt="Hubungi Admin Laboratorium via WhatsApp">
+      </a>
     </section>
 
     <section id="kontak">
       <h2>Kontak</h2>
-      <p>Informasi layanan inventaris.</p>
+      <form>
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" required>
+        <button type="submit">Kirim</button>
+      </form>
     </section>
   </main>
 
