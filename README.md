@@ -26,3 +26,24 @@ URL Lokal
 | 3 | `header-footer.css?ver=3.4.9` | GET | 200 | text/css | 7,182 B | Memuat tata letak dan gaya khusus untuk area header dan footer. |
 | 4 | `elementor-icons.min.css?ver=5.29.0` | GET | 200 | text/css | 19,778 B | Menyediakan pustaka ikon visual untuk komponen UI Elementor. |
 | 5 | `custom-frontend.min.css?ver=1769322192` | GET | 200 | text/css | 173,853 B | Memuat gaya kustom utama untuk keseluruhan tampilan frontend web. |
+
+
+
+# Proyek PemWeb - WebLab (Inventaris Laboratorium)
+
+Deskripsi singkat: Portal inventaris laboratorium Teknik Komputer untuk mencatat data alat dan status kondisi laboratorium.
+
+## Cara Menjalankan
+1. Jalankan Laragon 5 atau gunakan ekstensi Live Server di VS Code.
+2. Buka file `index.html` pada browser.
+
+## Catatan Fitur Selesai
+-  Struktur HTML5 semantik (`header`, `nav`, `main`, 3 `section`, `article`, `form`, `footer`)
+-  Hirarki heading terstruktur (`h1`, `h2`, `h3`)
+-  Penggunaan `alt` text pada gambar (informatif, dekoratif, dan link)
+-  Form kontak sederhana dengan `label` terikat `input`
+-  Aksesibilitas navigasi keyboard (Tab navigation)
+
+## AI Usage Log
+- AI Tool: Gemini
+- Penggunaan: Membantu penyusunan struktur HTML5 semantik, penataan alt text gambar, pembuatan form terikat label, serta panduan alur Git workflow.
