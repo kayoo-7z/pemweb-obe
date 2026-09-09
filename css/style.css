@@ -1,0 +1,212 @@
+/* 1. Custom Properties (CSS Variables) */
+:root {
+  --color-primary: #1e3a8a;
+  --color-secondary: #2563eb;
+  --color-accent: #3b82f6;
+  --color-bg: #f8fafc;
+  --color-card: #ffffff;
+  --color-text: #1e293b;
+  --color-muted: #64748b;
+  
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+  
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  
+  --font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* 2. Reset & Base Styles */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 3. Aksesibilitas: Skip Link & Focus */
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+header a[href="#main"] {
+  position: absolute;
+  top: -100px;
+  left: 1rem;
+  background: var(--color-primary);
+  color: white;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  z-index: 100;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+}
+
+header a[href="#main"]:focus {
+  top: 1rem;
+}
+
+/* 4. Header & Navigasi */
+header {
+  background-color: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+nav[aria-label="Navigasi utama"] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+nav a {
+  text-decoration: none;
+  color: var(--color-text);
+  font-weight: 600;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  transition: background-color 0.2s ease;
+}
+
+nav a:hover {
+  background-color: #f1f5f9;
+  color: var(--color-secondary);
+}
+
+/* 5. Main Layout & Section Box */
+main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing-md);
+}
+
+#beranda, #kontak {
+  background-color: var(--color-card);
+  border-radius: var(--radius-md);
+  padding: clamp(1rem, 3vw, 2.5rem);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  margin-bottom: var(--spacing-xl);
+  border: 1px solid #e2e8f0;
+}
+
+#beranda h2, #layanan h2, #kontak h2 {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  margin-bottom: var(--spacing-sm);
+  color: var(--color-primary);
+}
+
+#beranda img {
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-sm);
+  width: 100%;
+  max-height: 350px;
+  object-fit: cover;
+}
+
+/* 6. Section Layanan (Grid 3 Kolom) */
+#layanan {
+  margin-bottom: var(--spacing-xl);
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* Mobile: 1 kolom */
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-sm);
+}
+
+.card {
+  background: var(--color-card);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.card img {
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  height: 180px;
+  width: 100%;
+}
+
+/* 7. Section Contact Us */
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-md);
+}
+
+.contact-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.contact-item a {
+  color: var(--color-secondary);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.contact-item a:hover {
+  text-decoration: underline;
+}
+
+.wa-btn {
+  display: inline-block;
+  background-color: #25d366;
+  color: white !important;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  width: fit-content;
+  font-weight: 600 !important;
+  transition: background-color 0.2s ease;
+}
+
+.wa-btn:hover {
+  background-color: #1eb956;
+  text-decoration: none !important;
+}
+
+/* 8. Footer */
+footer {
+  text-align: center;
+  padding: var(--spacing-md);
+  color: var(--color-muted);
+  border-top: 1px solid #e2e8f0;
+  margin-top: var(--spacing-xl);
+}
+
+/* 9. Media Queries */
+@media (min-width: 768px) {
+  .services-grid {
+    grid-template-columns: repeat(3, 1fr); /* Desktop: 3 Kolom */
+  }
+}

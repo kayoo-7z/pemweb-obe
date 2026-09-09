@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Portal inventaris laboratorium Teknik Komputer">
   <title>WebLab - Inventaris Laboratorium</title>
+  <link rel="stylesheet" href="CSS/style.css">
 </head>
 <body>
 
@@ -12,6 +13,7 @@
     <a href="#main">Lewati ke konten utama</a>
     <h1>WebLab</h1>
     <nav aria-label="Navigasi utama">
+      <a href="#beranda">Beranda</a>
       <a href="#layanan">Layanan</a>
       <a href="#kontak">Kontak</a>
     </nav>
@@ -19,44 +21,62 @@
 
   <main id="main">
     <section id="beranda">
-      <h2>Beranda</h2>
-      <!-- Alt 1: Informatif -->
-      <img src="laboratorium.jpg" alt="Suasana ruang Laboratorium Teknik Komputer">
-      <!-- Alt 2: Dekoratif -->
-      <img src="pattern.png" alt="">
-      <p>Portal inventaris laboratorium.</p>
+      <h2>Selamat Datang di WebLab</h2>
+      <!-- Alt 1: Informatif (Gambar 1) -->
+      <img src="asset/laboratorium.jpg" alt="Suasana ruang Laboratorium Teknik Komputer">
+      <p>WebLab adalah sistem manajemen dan pemantauan inventaris resmi Laboratorium Teknik Komputer. Portal ini mempermudah mahasiswa dan asisten lab dalam mengelola peminjaman alat, mengecek ketersediaan komponen hardware, serta memantau kondisi perangkat praktikum secara real-time.</p>
     </section>
 
-    <section id="layanan">
-      <h2>Layanan Inventaris</h2>
-      <article>
-        <h3>Pencatatan Peralatan</h3>
-        <!-- Alt 3: Informatif -->
-        <img src="peralatan.jpg" alt="Papan mikrokontroler Arduino Uno dalam kondisi baik">
-        <p>Mencatat data alat dan status kondisi.</p>
-      </article>
-      <!-- Alt 4: Dekoratif -->
-      <img src="divider.png" alt="">
+ <section id="layanan">
+      <h2>Layanan Utama Kami</h2>
       
-      <!-- Alt 5: Gambar sebagai Link -->
-      <p>Hubungi admin via WhatsApp:</p>
-      <a href="https://wa.me/628123456789">
-        <img src="icon-wa.png" alt="Hubungi Admin Laboratorium via WhatsApp">
-      </a>
+      <div class="services-grid">
+        <article class="card">
+          <h3>Pencatatan Peralatan</h3>
+          <!-- Gambar 3 (Sudah Ada) -->
+          <img src="asset/peralatan.jpg" alt="Papan mikrokontroler Arduino Uno dalam kondisi baik">
+          <p>Mencatat seluruh data modul, komponen elektronik, dan perangkat keras laboratorium beserta status kondisinya secara akurat.</p>
+        </article>
+
+        <article class="card">
+          <h3>Peminjaman Alat</h3>
+          <!-- TAMBAHKAN GAMBAR BARU DI SINI -->
+          <img src="asset/peminjaman.jpg" alt="Proses peminjaman alat praktikum">
+          <p>Layanan pengajuan pinjam alat praktikum secara daring untuk mendukung kegiatan penelitian dan pengerjaan tugas akhir mahasiswa.</p>
+        </article>
+
+        <article class="card">
+          <h3>Laporan Kerusakan</h3>
+          <!-- TAMBAHKAN GAMBAR BARU DI SINI -->
+          <img src="asset/kerusakan.jpg" alt="Pemeriksaan kondisi hardware laboratorium">
+          <p>Fasilitas pelaporan cepat jika ditemukan indikasi kerusakan alat agar dapat segera dilakukan tindakan maintenance atau perbaikan.</p>
+        </article>
+      </div>
     </section>
 
     <section id="kontak">
-      <h2>Kontak</h2>
-      <form>
-        <label for="email">Email</label>
-        <input id="email" name="email" type="email" required>
-        <button type="submit">Kirim</button>
-      </form>
+      <h2>Contact Us</h2>
+      <p>Memiliki kendala seputar peminjaman atau butuh informasi lebih lanjut mengenai inventaris laboratorium? Silakan hubungi tim admin kami melalui kontak di bawah ini:</p>
+      
+      <div class="contact-links">
+        <div class="contact-item">
+          <strong>Email Support:</strong>
+          <a href="mailto:weblab.support@gmail.com">weblab.support@gmail.com</a>
+        </div>
+        
+        <div class="contact-item">
+          <strong>WhatsApp Admin:</strong>
+          <!-- Alt 5: Teks Link ke WA -->
+          <a href="https://wa.me/628123456789" target="_blank" rel="noopener noreferrer" class="wa-btn">
+            Chat Admin (+62 812-3456-789)
+          </a>
+        </div>
+      </div>
     </section>
   </main>
 
   <footer>
-    <p>&copy; 2026 WebLab</p>
+    <p>&copy; 2026 WebLab - Teknik Komputer</p>
   </footer>
 
 </body>
