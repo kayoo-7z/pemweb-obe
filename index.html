@@ -16,6 +16,8 @@
       <a href="#beranda">Beranda</a>
       <a href="#layanan">Layanan</a>
       <a href="#kontak">Kontak</a>
+
+      <button id="theme-button" type="button">🌙 Tema</button>
     </nav>
   </header>
 
@@ -25,6 +27,37 @@
       <!-- Alt 1: Informatif (Gambar 1) -->
       <img src="asset/laboratorium.jpg" alt="Suasana ruang Laboratorium Teknik Komputer">
       <p>WebLab adalah sistem manajemen dan pemantauan inventaris resmi Laboratorium Teknik Komputer. Portal ini mempermudah mahasiswa dan asisten lab dalam mengelola peminjaman alat, mengecek ketersediaan komponen hardware, serta memantau kondisi perangkat praktikum secara real-time.</p>
+    </section>
+
+    <section id="inventaris-section">
+      <h2>Daftar Inventaris Alat</h2>
+
+      <div class="controls-container">
+        <!-- Filter Kondisi -->
+        <div class="filter-buttons">
+          <button data-filter="Semua" class="active">Semua</button>
+          <button data-filter="Baik">Baik</button>
+          <button data-filter="Perlu Cek">Perlu Cek</button>
+          <button data-filter="Rusak">Rusak</button>
+        </div>
+
+        <!-- Input Pencarian Real-time -->
+        <div class="search-box">
+          <input type="text" id="search-input" placeholder="Cari nama alat..." />
+        </div>
+
+        <!-- Limit Tampilan per Halaman -->
+        <div class="limit-box">
+          <label for="page-limit">Tampilkan:</label>
+          <select id="page-limit">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="daftar-alat" class="services-grid"></div>
     </section>
 
  <section id="layanan">

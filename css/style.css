@@ -210,3 +210,218 @@ footer {
     grid-template-columns: repeat(3, 1fr); /* Desktop: 3 Kolom */
   }
 }
+
+/* Align tombol ganti tema di navbar */
+nav[aria-label="Navigasi utama"] {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+#theme-button {
+  background-color: #f1f5f9;
+  color: var(--color-text);
+  border: 1px solid #cbd5e1;
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+#theme-button:hover {
+  background-color: var(--color-secondary);
+  color: white;
+  border-color: var(--color-secondary);
+}
+
+/* Container Kontrol UI */
+#inventaris-section {
+  margin-bottom: var(--spacing-xl);
+}
+
+.controls-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  background: var(--color-card);
+  padding: 16px 20px;
+  border-radius: var(--radius-md);
+  border: 1px solid #e2e8f0;
+  margin: 16px 0 24px 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+/* Filter Buttons Styling */
+.filter-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filter-buttons button {
+  background-color: #f8fafc;
+  color: var(--color-text);
+  border: 1px solid #cbd5e1;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-buttons button:hover {
+  background-color: #e2e8f0;
+  border-color: #94a3b8;
+}
+
+.filter-buttons button.active {
+  background-color: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+/* Search Box & Select Limit Styling */
+.search-box {
+  flex: 1;
+  min-width: 200px;
+}
+
+#search-input {
+  width: 100%;
+  padding: 8px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  background-color: #ffffff;
+  color: var(--color-text);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#search-input:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.limit-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+#page-limit {
+  padding: 8px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: var(--radius-sm);
+  background-color: #ffffff;
+  color: var(--color-text);
+  font-size: 14px;
+  outline: none;
+  cursor: pointer;
+}
+
+#page-limit:focus {
+  border-color: var(--color-accent);
+}
+
+/* Button Detail pada Card */
+.btn-detail {
+  padding: 8px 16px;
+  background-color: var(--color-secondary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  align-self: flex-start;
+  margin-top: auto;
+}
+
+.btn-detail:hover {
+  background-color: var(--color-primary);
+}
+
+/* ==========================================
+   PREFERENSI TEMA DARK MODE GLOBAL
+   ========================================== */
+html[data-theme="dark"] {
+  background-color: #0f172a;
+  color: #f8fafc;
+}
+
+html[data-theme="dark"] body,
+html[data-theme="dark"] header,
+html[data-theme="dark"] main,
+html[data-theme="dark"] footer {
+  background-color: #0f172a;
+  color: #f8fafc;
+}
+
+html[data-theme="dark"] header {
+  border-bottom-color: #1e293b;
+}
+
+html[data-theme="dark"] nav a {
+  color: #f8fafc;
+}
+
+html[data-theme="dark"] nav a:hover {
+  background-color: #1e293b;
+  color: #60a5fa;
+}
+
+html[data-theme="dark"] #theme-button {
+  background-color: #1e293b;
+  color: #f8fafc;
+  border-color: #334155;
+}
+
+html[data-theme="dark"] #theme-button:hover {
+  background-color: #3b82f6;
+  color: white;
+}
+
+html[data-theme="dark"] #beranda, 
+html[data-theme="dark"] #kontak,
+html[data-theme="dark"] .card,
+html[data-theme="dark"] .controls-container {
+  background-color: #1e293b;
+  border-color: #334155;
+  color: #f8fafc;
+}
+
+html[data-theme="dark"] h1,
+html[data-theme="dark"] h2,
+html[data-theme="dark"] h3 {
+  color: #60a5fa;
+}
+
+html[data-theme="dark"] .filter-buttons button {
+  background-color: #334155;
+  color: #f8fafc;
+  border-color: #475569;
+}
+
+html[data-theme="dark"] .filter-buttons button:hover {
+  background-color: #475569;
+}
+
+html[data-theme="dark"] .filter-buttons button.active {
+  background-color: #2563eb;
+  color: white;
+}
+
+html[data-theme="dark"] #search-input,
+html[data-theme="dark"] #page-limit {
+  background-color: #0f172a;
+  color: #ffffff;
+  border-color: #334155;
+}
