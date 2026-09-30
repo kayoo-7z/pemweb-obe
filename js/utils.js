@@ -29,7 +29,7 @@ export function cariAlatBerdasarkanId(data, id) {
   }
   return hasil;
 }
-
+ 
 // Latihan 3: Format ringkasan alat menggunakan Destructuring & Template Literal
 export function formatRingkasanAlat(item) {
   if (!item) return 'Data alat tidak valid.';

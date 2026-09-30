@@ -111,3 +111,214 @@ limitSelect.addEventListener('change', (e) => {
 
 // Render awal saat halaman pertama kali dimuat
 renderItems(dataAktif);
+
+// --- MODUL 6: FORM, VALIDASI, ACCESSIBILITY ---
+
+const formAlat = document.querySelector('#form-alat');
+const formStatus = document.querySelector('#form-status');
+const errorSummary = document.querySelector('#error-summary');
+const previewBox = document.querySelector('#preview-data');
+const previewList = document.querySelector('#preview-list');
+const tanggalInput = document.querySelector('#tanggal');
+
+const KATEGORI_VALID = ['Mikrokontroler', 'Pengukuran', 'Jaringan'];
+const KONDISI_VALID = ['Baik', 'Perlu Cek', 'Rusak'];
+
+// Tanggal hari ini format YYYY-MM-DD (pakai waktu lokal, bukan UTC)
+function todayString() {
+  const now = new Date();
+  const local = new Date(now.getTime() - now.getTimezoneOffset() * 60000);
+  return local.toISOString().slice(0, 10);
+}
+
+// Batasi date picker sampai hari ini (bantuan UI; validasi tetap di JS)
+tanggalInput.max = todayString();
+
+// Input handling: bersihkan & normalisasi sebelum divalidasi
+function normalisasiData(formData) {
+  return {
+    nama: String(formData.get('nama') ?? '').trim().replace(/\s+/g, ' '),
+    kategori: String(formData.get('kategori') ?? '').trim(),
+    jumlah: String(formData.get('jumlah') ?? '').trim(),
+    kondisi: String(formData.get('kondisi') ?? '').trim(),
+    tanggal: String(formData.get('tanggal') ?? '').trim(),
+    catatan: String(formData.get('catatan') ?? '').trim(),
+    setuju: formData.has('setuju')
+  };
+}
+
+// validateForm(formData) -> object errors (urutan key = urutan field di form)
+function validateForm(formData) {
+  const errors = {};
+  const d = normalisasiData(formData);
+
+  // Aturan 1: nama (kosong / terlalu pendek / karakter tidak valid)
+  if (d.nama === '') {
+    errors.nama = 'Nama alat wajib diisi.';
+  } else if (d.nama.length < 3) {
+    errors.nama = 'Nama alat minimal 3 karakter.';
+  } else if (!/^[\p{L}\p{N}\s.\-\/()]+$/u.test(d.nama)) {
+    errors.nama = 'Nama alat hanya boleh berisi huruf, angka, spasi, titik, tanda hubung, atau garis miring.';
+  }
+
+  // Aturan 2: kategori (kosong / bukan dari pilihan)
+  if (d.kategori === '') {
+    errors.kategori = 'Pilih salah satu kategori alat.';
+  } else if (!KATEGORI_VALID.includes(d.kategori)) {
+    errors.kategori = 'Kategori tidak valid. Pilih dari daftar yang tersedia.';
+  }
+
+  // Aturan 3: jumlah (kosong / bukan bilangan bulat / negatif / kebesaran)
+  const jumlah = Number(d.jumlah);
+  if (d.jumlah === '') {
+    errors.jumlah = 'Jumlah wajib diisi.';
+  } else if (!Number.isInteger(jumlah)) {
+    errors.jumlah = 'Jumlah harus berupa bilangan bulat, contoh: 5.';
+  } else if (jumlah < 0) {
+    errors.jumlah = 'Jumlah tidak boleh kurang dari 0.';
+  } else if (jumlah > 1000) {
+    errors.jumlah = 'Jumlah maksimal 1000 unit.';
+  }
+
+  // Aturan 4: kondisi (kosong / bukan dari pilihan)
+  if (d.kondisi === '') {
+    errors.kondisi = 'Pilih kondisi alat.';
+  } else if (!KONDISI_VALID.includes(d.kondisi)) {
+    errors.kondisi = 'Kondisi tidak valid. Pilih dari daftar yang tersedia.';
+  }
+
+  // Aturan 5: tanggal perolehan (kosong / format salah / melebihi hari ini)
+  if (d.tanggal === '') {
+    errors.tanggal = 'Tanggal perolehan wajib diisi.';
+  } else if (!/^\d{4}-\d{2}-\d{2}$/.test(d.tanggal) || Number.isNaN(Date.parse(d.tanggal))) {
+    errors.tanggal = 'Format tanggal tidak valid. Gunakan format tahun-bulan-tanggal.';
+  } else if (d.tanggal > todayString()) {
+    errors.tanggal = 'Tanggal perolehan tidak boleh melebihi hari ini.';
+  }
+
+  // Aturan 6: catatan opsional, maks 200 karakter
+  if (d.catatan.length > 200) {
+    errors.catatan = `Catatan maksimal 200 karakter (sekarang ${d.catatan.length}).`;
+  }
+
+  // Aturan 7: persetujuan wajib dicentang
+  if (!d.setuju) {
+    errors.setuju = 'Centang pernyataan ini sebelum melanjutkan.';
+  }
+
+  return errors;
+}
+
+const LABEL_FIELD = {
+  nama: 'Nama alat', kategori: 'Kategori', jumlah: 'Jumlah',
+  kondisi: 'Kondisi', tanggal: 'Tanggal perolehan',
+  catatan: 'Catatan', setuju: 'Persetujuan'
+};
+
+function resetErrors() {
+  formAlat.querySelectorAll('.error').forEach(el => (el.textContent = ''));
+  formAlat.querySelectorAll('[aria-invalid="true"]').forEach(el => el.removeAttribute('aria-invalid'));
+  errorSummary.replaceChildren();
+  errorSummary.hidden = true;
+  formStatus.className = '';
+}
+
+function renderErrors(errors) {
+  // Pesan error dekat field + aria-invalid
+  for (const [field, message] of Object.entries(errors)) {
+    document.querySelector(`#error-${field}`).textContent = message;
+    formAlat.elements[field]?.setAttribute('aria-invalid', 'true');
+  }
+
+  // Error summary di atas form (aman: pakai textContent)
+  const judul = document.createElement('strong');
+  judul.textContent = `Terdapat ${Object.keys(errors).length} kesalahan pada formulir:`;
+  const ul = document.createElement('ul');
+  for (const [field, message] of Object.entries(errors)) {
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    a.href = `#${field}`;
+    a.textContent = `${LABEL_FIELD[field]}: ${message}`;
+    li.append(a);
+    ul.append(li);
+  }
+  errorSummary.append(judul, ul);
+  errorSummary.hidden = false;
+}
+
+function tampilkanPreview(formData) {
+  const d = normalisasiData(formData);
+  const tampil = {
+    'Nama alat': d.nama,
+    'Kategori': d.kategori,
+    'Jumlah': `${Number(d.jumlah)} unit`,
+    'Kondisi': d.kondisi,
+    'Tanggal perolehan': d.tanggal,
+    'Catatan': d.catatan || '-'
+  };
+  previewList.replaceChildren();
+  for (const [k, v] of Object.entries(tampil)) {
+    const dt = document.createElement('dt');
+    dt.textContent = k;
+    const dd = document.createElement('dd');
+    dd.textContent = v;
+    previewList.append(dt, dd);
+  }
+  previewBox.hidden = false;
+}
+
+formAlat.addEventListener('submit', event => {
+  event.preventDefault();
+  resetErrors();
+  previewBox.hidden = true;
+
+  const formData = new FormData(formAlat);
+  const errors = validateForm(formData);
+
+  if (Object.keys(errors).length > 0) {
+    renderErrors(errors);
+    const firstField = Object.keys(errors)[0];
+    formAlat.elements[firstField]?.focus();       // fokus ke error pertama
+    formStatus.textContent = 'Periksa kembali data yang belum valid.';
+    formStatus.className = 'fail';
+    return;
+  }
+
+  // Valid: tampilkan preview, JANGAN kirim ke server dulu
+  tampilkanPreview(formData);
+  formStatus.textContent = 'Data valid dan siap dikirim.';
+  formStatus.className = 'ok';
+});
+
+// UX: error di sebuah field hilang begitu user mulai memperbaikinya
+formAlat.addEventListener('input', e => {
+  const field = e.target.name;
+  if (!field) return;
+  const err = document.querySelector(`#error-${field}`);
+  if (err) err.textContent = '';
+  e.target.removeAttribute('aria-invalid');
+});
+
+// Draft form (non-sensitif) - PPT hal. 14
+const DRAFT_KEY = 'alatFormDraft';
+
+formAlat.addEventListener('input', () => {
+  const data = Object.fromEntries(new FormData(formAlat));
+  localStorage.setItem(DRAFT_KEY, JSON.stringify(data));
+});
+
+const rawDraft = localStorage.getItem(DRAFT_KEY);
+if (rawDraft) {
+  try {
+    const draft = JSON.parse(rawDraft);
+    for (const [name, value] of Object.entries(draft)) {
+      const el = formAlat.elements[name];
+      if (!el) continue;
+      if (el.type === 'checkbox') el.checked = true; else el.value = value;
+    }
+  } catch { localStorage.removeItem(DRAFT_KEY); }
+}
+
+formAlat.addEventListener('submit', () => {
+  if (formStatus.classList.contains('ok')) localStorage.removeItem(DRAFT_KEY);
+});

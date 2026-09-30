@@ -14,6 +14,7 @@
     <h1>WebLab</h1>
     <nav aria-label="Navigasi utama">
       <a href="#beranda">Beranda</a>
+      <a href="#form-section">Form Alat</a>
       <a href="#layanan">Layanan</a>
       <a href="#kontak">Kontak</a>
 
@@ -58,6 +59,81 @@
       </div>
 
       <div id="daftar-alat" class="services-grid"></div>
+    </section>
+
+        <!-- ===== MODUL 6: FORM TAMBAH DATA ALAT ===== -->
+    <section id="form-section">
+      <h2>Form Data Alat</h2>
+      <p id="form-petunjuk">Kolom bertanda * wajib diisi.</p>
+
+      <!-- Error summary (Latihan B PPT) -->
+      <div id="error-summary" class="error-summary" tabindex="-1" hidden></div>
+
+      <form id="form-alat" novalidate aria-describedby="form-petunjuk">
+
+        <div class="form-group">
+          <label for="nama">Nama alat *</label>
+          <input type="text" id="nama" name="nama" required minlength="3"
+                 autocomplete="off" aria-describedby="error-nama">
+          <small id="error-nama" class="error" aria-live="polite"></small>
+        </div>
+
+        <div class="form-group">
+          <label for="kategori">Kategori *</label>
+          <select id="kategori" name="kategori" required aria-describedby="error-kategori">
+            <option value="">-- Pilih kategori --</option>
+            <option value="Mikrokontroler">Mikrokontroler</option>
+            <option value="Pengukuran">Pengukuran</option>
+            <option value="Jaringan">Jaringan</option>
+          </select>
+          <small id="error-kategori" class="error" aria-live="polite"></small>
+        </div>
+
+        <div class="form-group">
+          <label for="jumlah">Jumlah (unit) *</label>
+          <input type="number" id="jumlah" name="jumlah" required min="0" max="1000" step="1"
+                 inputmode="numeric" aria-describedby="error-jumlah">
+          <small id="error-jumlah" class="error" aria-live="polite"></small>
+        </div>
+
+        <div class="form-group">
+          <label for="kondisi">Kondisi *</label>
+          <select id="kondisi" name="kondisi" required aria-describedby="error-kondisi">
+            <option value="">-- Pilih kondisi --</option>
+            <option value="Baik">Baik</option>
+            <option value="Perlu Cek">Perlu Cek</option>
+            <option value="Rusak">Rusak</option>
+          </select>
+          <small id="error-kondisi" class="error" aria-live="polite"></small>
+        </div>
+
+        <div class="form-group">
+          <label for="tanggal">Tanggal perolehan *</label>
+          <input type="date" id="tanggal" name="tanggal" required aria-describedby="error-tanggal">
+          <small id="error-tanggal" class="error" aria-live="polite"></small>
+        </div>
+
+        <div class="form-group">
+          <label for="catatan">Catatan (opsional, maks. 200 karakter)</label>
+          <textarea id="catatan" name="catatan" rows="3" aria-describedby="error-catatan"></textarea>
+          <small id="error-catatan" class="error" aria-live="polite"></small>
+        </div>
+
+        <div class="form-group form-check">
+          <input type="checkbox" id="setuju" name="setuju" required aria-describedby="error-setuju">
+          <label for="setuju">Saya menyatakan data di atas benar *</label>
+          <small id="error-setuju" class="error" aria-live="polite"></small>
+        </div>
+
+        <button type="submit" class="btn-detail">Validasi Data</button>
+      </form>
+
+      <p id="form-status" role="status" aria-live="polite"></p>
+
+      <div id="preview-data" class="preview-box" hidden>
+        <h3>Preview Data (belum dikirim ke server)</h3>
+        <dl id="preview-list"></dl>
+      </div>
     </section>
 
  <section id="layanan">

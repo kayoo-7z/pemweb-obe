@@ -425,3 +425,106 @@ html[data-theme="dark"] #page-limit {
   color: #ffffff;
   border-color: #334155;
 }
+
+/* ==========================================
+   MODUL 6: FORM & VALIDASI
+   ========================================== */
+#form-section {
+  background-color: var(--color-card);
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-md);
+  padding: clamp(1rem, 3vw, 2.5rem);
+  margin-bottom: var(--spacing-xl);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+#form-section h2 {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  margin-bottom: var(--spacing-xs);
+  color: var(--color-primary);
+}
+
+#form-alat {
+  display: grid;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-md);
+  max-width: 640px;
+}
+
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group label { font-weight: 600; font-size: 14px; }
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="date"],
+.form-group select,
+.form-group textarea {
+  padding: 8px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-family: inherit;
+  background: #fff;
+  color: var(--color-text);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+.form-check { flex-direction: row; flex-wrap: wrap; align-items: center; }
+.form-check .error { flex-basis: 100%; }
+
+/* State error: warna + teks + ikon (tidak hanya warna) */
+[aria-invalid="true"] {
+  border: 2px solid #dc2626 !important;
+}
+
+.error { color: #b91c1c; font-size: 13px; min-height: 1em; }
+.error:not(:empty)::before { content: "⚠ "; }
+
+.error-summary {
+  border: 2px solid #dc2626;
+  background: #fef2f2;
+  color: #7f1d1d;
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-sm);
+  margin-top: var(--spacing-sm);
+}
+.error-summary ul { margin: 6px 0 0 20px; }
+.error-summary a { color: inherit; font-weight: 600; }
+
+#form-status { margin-top: var(--spacing-sm); font-weight: 600; }
+#form-status.ok { color: #15803d; }
+#form-status.fail { color: #b91c1c; }
+
+.preview-box {
+  margin-top: var(--spacing-md);
+  padding: var(--spacing-sm);
+  border: 1px dashed #94a3b8;
+  border-radius: var(--radius-sm);
+}
+.preview-box dl { display: grid; grid-template-columns: max-content 1fr; gap: 4px 16px; }
+.preview-box dt { font-weight: 600; }
+
+/* Dark mode */
+html[data-theme="dark"] #form-section {
+  background-color: #1e293b;
+  border-color: #334155;
+  color: #f8fafc;
+}
+html[data-theme="dark"] .form-group input,
+html[data-theme="dark"] .form-group select,
+html[data-theme="dark"] .form-group textarea {
+  background-color: #0f172a;
+  color: #fff;
+  border-color: #334155;
+}
+html[data-theme="dark"] .error { color: #fca5a5; }
+html[data-theme="dark"] .error-summary { background: #450a0a; color: #fecaca; }
+html[data-theme="dark"] #form-status.ok { color: #86efac; }
+html[data-theme="dark"] #form-status.fail { color: #fca5a5; }
