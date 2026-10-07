@@ -326,7 +326,7 @@ formAlat.addEventListener('submit', () => {
 // --- MODUL 7: WEB API, FETCH, JSON, ASYNC/AWAIT ---
 
 // Ubah ke true bila internet lab bermasalah / API publik down
-const USE_LOCAL_DATA = true;
+const USE_LOCAL_DATA = false;
 const API_URL = 'https://jsonplaceholder.typicode.com/users';
 const LOCAL_URL = './data/users.json';
 
