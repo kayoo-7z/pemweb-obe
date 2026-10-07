@@ -17,6 +17,7 @@
       <a href="#form-section">Form Alat</a>
       <a href="#layanan">Layanan</a>
       <a href="#kontak">Kontak</a>
+      <a href="#api-section">Dashboard</a>
 
       <button id="theme-button" type="button">🌙 Tema</button>
     </nav>
@@ -134,6 +135,45 @@
         <h3>Preview Data (belum dikirim ke server)</h3>
         <dl id="preview-list"></dl>
       </div>
+    </section>
+
+        <!-- ===== MODUL 7: DASHBOARD API ===== -->
+    <section id="api-section">
+      <h2>Dashboard Peminjam (REST API)</h2>
+      <p>Data diambil dari REST API menggunakan Fetch, JSON, dan async/await.</p>
+
+      <div class="api-controls">
+        <div class="api-search">
+          <label for="api-search">Cari peminjam</label>
+          <input type="search" id="api-search" placeholder="Cari nama atau email..." autocomplete="off" disabled>
+        </div>
+        <button type="button" id="api-reload" class="btn-detail">Muat Ulang</button>
+      </div>
+
+      <!-- Loading / status -->
+      <div class="api-status">
+        <span id="api-spinner" class="spinner" aria-hidden="true" hidden></span>
+        <p id="api-message" role="status" aria-live="polite"></p>
+      </div>
+
+      <!-- Error state + retry -->
+      <div id="api-error" class="api-error" role="alert" hidden>
+        <p id="api-error-text"></p>
+        <button type="button" id="api-retry" class="btn-detail">Coba Lagi</button>
+      </div>
+
+      <!-- Ringkasan dashboard -->
+      <div id="api-stats" class="api-stats" hidden>
+        <div class="stat"><span class="stat-value" id="stat-total">0</span><span>Total data</span></div>
+        <div class="stat"><span class="stat-value" id="stat-shown">0</span><span>Ditampilkan</span></div>
+        <div class="stat"><span class="stat-value" id="stat-source">-</span><span>Sumber data</span></div>
+      </div>
+
+      <!-- Empty state -->
+      <p id="api-empty" class="api-empty" hidden></p>
+
+      <!-- Success state: kartu data -->
+      <div id="api-output" class="services-grid" aria-busy="false"></div>
     </section>
 
  <section id="layanan">

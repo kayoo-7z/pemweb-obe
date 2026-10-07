@@ -322,3 +322,131 @@ if (rawDraft) {
 formAlat.addEventListener('submit', () => {
   if (formStatus.classList.contains('ok')) localStorage.removeItem(DRAFT_KEY);
 });
+
+// --- MODUL 7: WEB API, FETCH, JSON, ASYNC/AWAIT ---
+
+// Ubah ke true bila internet lab bermasalah / API publik down
+const USE_LOCAL_DATA = true;
+const API_URL = 'https://jsonplaceholder.typicode.com/users';
+const LOCAL_URL = './data/users.json';
+
+const apiOutput = document.querySelector('#api-output');
+const apiMessage = document.querySelector('#api-message');
+const apiSpinner = document.querySelector('#api-spinner');
+const apiError = document.querySelector('#api-error');
+const apiErrorText = document.querySelector('#api-error-text');
+const apiRetry = document.querySelector('#api-retry');
+const apiReload = document.querySelector('#api-reload');
+const apiSearch = document.querySelector('#api-search');
+const apiEmpty = document.querySelector('#api-empty');
+const apiStats = document.querySelector('#api-stats');
+const statTotal = document.querySelector('#stat-total');
+const statShown = document.querySelector('#stat-shown');
+const statSource = document.querySelector('#stat-source');
+
+// Data asli disimpan di sini; search memfilter dari array ini (tanpa request ulang)
+let semuaUser = [];
+
+function setApiLoading(isLoading) {
+  apiSpinner.hidden = !isLoading;
+  apiOutput.setAttribute('aria-busy', String(isLoading));
+  apiReload.disabled = isLoading;
+  apiRetry.disabled = isLoading;
+  if (isLoading) apiMessage.textContent = 'Memuat data...';
+}
+
+// Render aman: pakai createElement + textContent (bukan innerHTML)
+function renderUsers(items) {
+  apiOutput.replaceChildren();
+
+  items.forEach(user => {
+    const card = document.createElement('article');
+    card.className = 'card';
+
+    const nama = document.createElement('h3');
+    nama.textContent = user.name;
+
+    const email = document.createElement('p');
+    email.textContent = `Email: ${user.email}`;
+
+    const info = document.createElement('p');
+    info.textContent = `${user.company?.name ?? '-'} | ${user.address?.city ?? '-'}`;
+
+    card.append(nama, email, info);
+    apiOutput.append(card);
+  });
+
+  // Empty state: bedakan "data memang kosong" vs "hasil search kosong"
+  if (items.length === 0) {
+    apiEmpty.textContent = semuaUser.length === 0
+      ? 'Belum ada data untuk ditampilkan.'
+      : 'Tidak ada data yang cocok dengan pencarian.';
+    apiEmpty.hidden = false;
+  } else {
+    apiEmpty.hidden = true;
+  }
+
+  // Ringkasan dashboard
+  statTotal.textContent = semuaUser.length;
+  statShown.textContent = items.length;
+  statSource.textContent = USE_LOCAL_DATA ? 'File lokal' : 'API publik';
+  apiStats.hidden = false;
+}
+
+async function loadUsers() {
+  const endpoint = USE_LOCAL_DATA ? LOCAL_URL : API_URL;
+
+  setApiLoading(true);
+  apiError.hidden = true;
+  apiEmpty.hidden = true;
+
+  try {
+    const response = await fetch(endpoint, {
+      headers: { Accept: 'application/json' }
+    });
+
+    // Urutan berpikir: 1) cek status, 2) baca body, 3) render
+    console.log('Status:', response.status, '| ok:', response.ok);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+    const data = await response.json();
+    if (!Array.isArray(data)) throw new Error('Format JSON tidak sesuai');
+
+    semuaUser = data;
+    apiSearch.disabled = false;
+    renderUsers(semuaUser);
+    apiMessage.textContent = `Berhasil memuat ${data.length} data.`;
+  } catch (error) {
+    // Detail teknis hanya ke Console, pengguna hanya lihat pesan ramah
+    console.error(error);
+    semuaUser = [];
+    apiOutput.replaceChildren();
+    apiStats.hidden = true;
+    apiSearch.disabled = true;
+    apiMessage.textContent = '';
+    apiErrorText.textContent = 'Data belum dapat dimuat. Periksa koneksi, lalu coba lagi.';
+    apiError.hidden = false;
+  } finally {
+    setApiLoading(false);   // loading berhenti apa pun hasilnya
+  }
+}
+
+// Latihan 1: tombol retry & muat ulang
+apiRetry.addEventListener('click', loadUsers);
+apiReload.addEventListener('click', () => {
+  apiSearch.value = '';
+  loadUsers();
+});
+
+// Latihan 2: filter dari data yang sudah ada, TANPA memanggil API
+apiSearch.addEventListener('input', e => {
+  const keyword = e.target.value.trim().toLowerCase();
+  const hasil = semuaUser.filter(user =>
+    user.name.toLowerCase().includes(keyword) ||
+    user.email.toLowerCase().includes(keyword)
+  );
+  renderUsers(hasil);
+});
+
+// Jalankan saat halaman dimuat
+loadUsers();

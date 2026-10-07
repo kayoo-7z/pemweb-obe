@@ -1,0 +1,8 @@
+[
+  { "id": 1, "name": "Andi Pratama", "username": "andi", "email": "andi@ubt.ac.id", "company": { "name": "Lab Hardware" }, "address": { "city": "Tarakan" } },
+  { "id": 2, "name": "Siti Rahma", "username": "siti", "email": "siti@ubt.ac.id", "company": { "name": "Lab Jaringan" }, "address": { "city": "Tarakan" } },
+  { "id": 3, "name": "Budi Santoso", "username": "budi", "email": "budi@ubt.ac.id", "company": { "name": "Lab Hardware" }, "address": { "city": "Balikpapan" } },
+  { "id": 4, "name": "Rina Marlina", "username": "rina", "email": "rina@ubt.ac.id", "company": { "name": "Lab Jaringan" }, "address": { "city": "Samarinda" } },
+  { "id": 5, "name": "Dewi Lestari", "username": "dewi", "email": "dewi@ubt.ac.id", "company": { "name": "Lab Hardware" }, "address": { "city": "Tarakan" } },
+  { "id": 6, "name": "Fajar Nugroho", "username": "fajar", "email": "fajar@ubt.ac.id", "company": { "name": "Lab Jaringan" }, "address": { "city": "Nunukan" } }
+]
