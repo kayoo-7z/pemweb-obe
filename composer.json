@@ -1,0 +1,6 @@
+{
+    "name": "kayoo-7z/pemweb-obe",
+    "require": {
+        "vlucas/phpdotenv": "^5.7"
+    }
+}
