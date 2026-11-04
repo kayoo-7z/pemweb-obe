@@ -1,0 +1,43 @@
+### 1. GET Collection (Semua Data + Pagination) - SS 1
+GET http://localhost/pemweb-obe/api/alats.php?page=1&limit=5
+
+### 2. GET Single ID (Sukses & Not Found)
+GET http://localhost/pemweb-obe/api/alats.php?id=1
+
+### 3. CREATE (POST Data Valid - 201 Created) - SS 2 (Atas)
+POST http://localhost/pemweb-obe/api/alats.php
+Content-Type: application/json
+
+{
+  "nama": "Raspberry Pi 4 Model B",
+  "kategori": "Hardware",
+  "jumlah": 5,
+  "kondisi": "Baik"
+}
+
+### 4. CREATE (POST Data Invalid - 422 Validation Error) - SS 2 (Bawah)
+POST http://localhost/pemweb-obe/api/alats.php
+Content-Type: application/json
+
+{
+  "nama": "",
+  "kategori": "Hardware",
+  "jumlah": -3
+}
+
+### 5. UPDATE (PUT Data Valid - 200 OK) - SS 3
+PUT http://localhost/pemweb-obe/api/alats.php?id=1
+Content-Type: application/json
+
+{
+  "nama": "Arduino Uno R3 (Updated)",
+  "kategori": "Hardware",
+  "jumlah": 12,
+  "kondisi": "Baik"
+}
+
+### 6. GET Single IDTidak Ada (404 Not Found) - SS 4
+GET http://localhost/pemweb-obe/api/alats.php?id=99999
+
+### 7. DELETE (Sukses - 204 No Content)
+DELETE http://localhost/pemweb-obe/api/alats.php?id=5
