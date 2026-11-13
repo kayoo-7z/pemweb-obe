@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 header('Content-Type: application/json; charset=utf-8');
 require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../config/auth.php';
 
 // Helper Response JSON
 function jsonResponse(int $statusCode, array $payload): void {
@@ -33,7 +34,7 @@ function jsonError(int $statusCode, string $code, string $message, array $fields
     }
     jsonResponse($statusCode, $errorPayload);
 }
-
+const KONDISI_VALID = ['Baik', 'Perlu Cek', 'Rusak'];
 // Global Exception Handler Boundary
 try {
     $pdo = db();
@@ -49,6 +50,7 @@ try {
     // 1. READ (GET Collection & GET Single by ID)
     // ----------------------------------------------------
     if ($method === 'GET') {
+        requireLogin();
         if (isset($_GET['id'])) {
             if ($idParam === false || $idParam <= 0) {
                 jsonError(400, 'BAD_REQUEST', 'ID alat tidak valid');
@@ -118,6 +120,7 @@ try {
     // 2. CREATE (POST)
     // ----------------------------------------------------
     if ($method === 'POST') {
+        requireRole(['admin', 'petugas']);
         $payload = json_decode(file_get_contents('php://input'), true) ?? $_POST;
 
         $nama     = trim((string)($payload['nama'] ?? ''));
@@ -133,10 +136,14 @@ try {
         if ($jumlah === false || $jumlah < 0) {
             $fields['jumlah'] = 'Jumlah harus berupa angka integer >= 0';
         }
+        if (!in_array($kondisi, KONDISI_VALID, true)) {
+            $fields['kondisi'] = 'Kondisi harus Baik, Perlu Cek, atau Rusak';
+        }
 
         if (!empty($fields)) {
             jsonError(422, 'VALIDATION_ERROR', 'Data yang dikirim tidak valid', $fields);
         }
+    
 
         $stmt = $pdo->prepare('INSERT INTO alat (nama, kategori, jumlah, kondisi) VALUES (:nama, :kategori, :jumlah, :kondisi)');
         $stmt->execute([
@@ -157,6 +164,7 @@ try {
     // 3. UPDATE (PUT / PATCH)
     // ----------------------------------------------------
     if ($method === 'PUT' || $method === 'PATCH') {
+        requireRole(['admin', 'petugas']);
         if (!isset($_GET['id']) || $idParam === false || $idParam <= 0) {
             jsonError(400, 'BAD_REQUEST', 'ID alat wajib disertakan dan harus valid');
         }
@@ -181,6 +189,10 @@ try {
         if ($kategori === '') $fields['kategori'] = 'Kategori tidak boleh kosong';
         if ($jumlah === false || $jumlah < 0) $fields['jumlah'] = 'Jumlah harus berupa integer >= 0';
 
+        if (!in_array($kondisi, KONDISI_VALID, true)) {
+            $fields['kondisi'] = 'Kondisi harus Baik, Perlu Cek, atau Rusak';
+        }
+
         if (!empty($fields)) {
             jsonError(422, 'VALIDATION_ERROR', 'Data pembaruan tidak valid', $fields);
         }
@@ -202,6 +214,7 @@ try {
     // 4. DELETE
     // ----------------------------------------------------
     if ($method === 'DELETE') {
+        requireRole(['admin']);
         if (!isset($_GET['id']) || $idParam === false || $idParam <= 0) {
             jsonError(400, 'BAD_REQUEST', 'ID alat wajib disertakan dan harus valid');
         }
@@ -212,8 +225,15 @@ try {
             jsonError(404, 'NOT_FOUND', 'Data alat tidak ditemukan atau sudah dihapus');
         }
 
-        $delStmt = $pdo->prepare('DELETE FROM alat WHERE id = :id');
-        $delStmt->execute(['id' => $idParam]);
+        try {
+            $delStmt = $pdo->prepare('DELETE FROM alat WHERE id = :id');
+            $delStmt->execute(['id' => $idParam]);
+        } catch (PDOException $e) {
+            if ($e->getCode() === '23000') {
+                jsonError(409, 'CONFLICT', 'Alat masih dipakai pada data peminjaman');
+            }
+            throw $e;
+        }
 
         http_response_code(204);
         exit;

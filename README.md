@@ -47,3 +47,44 @@ Deskripsi singkat: Portal inventaris laboratorium Teknik Komputer untuk mencatat
 ## AI Usage Log
 - AI Tool: Gemini
 - Penggunaan: Membantu penyusunan struktur HTML5 semantik, penataan alt text gambar, pembuatan form terikat label, serta panduan alur Git workflow.
+
+### Alur login berbasis Session (yang dipakai)
+```mermaid
+sequenceDiagram
+    participant B as Browser
+    participant S as Server PHP
+    participant D as Database
+    B->>S: POST /api/login.php (email, password)
+    S->>D: SELECT user WHERE email
+    D-->>S: user + password_hash
+    S->>S: password_verify() + session_regenerate_id(true)
+    S-->>B: 200 + Set-Cookie PHPSESSID (HttpOnly, SameSite=Lax)
+    B->>S: GET /api/alats.php (Cookie PHPSESSID)
+    S->>S: baca $_SESSION (user_id, role) lalu requireRole()
+    S-->>B: 200 / 401 / 403
+    B->>S: POST /api/logout.php
+    S->>S: session_destroy()
+    S-->>B: 200 (cookie dihapus)
+```
+
+### Alur hipotetis berbasis JWT
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant S as Server
+    C->>S: POST /login (email, password)
+    S->>S: verifikasi password, buat JWT (claims sub, role, exp) lalu tandatangani
+    S-->>C: 200 + token
+    C->>C: simpan token
+    C->>S: GET /api/alat (Authorization Bearer token)
+    S->>S: verifikasi tanda tangan dan exp (tanpa lookup session)
+    S-->>C: 200 / 401 / 403
+    Note over C,S: Logout = client membuang token
+```
+
+| Aspek | Session | JWT |
+|---|---|---|
+| State | Disimpan di **server** (`$_SESSION`) | Dibawa **di dalam token** (stateless) |
+| Penyimpanan di client | Cookie `PHPSESSID` (HttpOnly, tidak terbaca JS) | Memory/storage; perlu dirancang aman |
+| Logout | Mudah: `session_destroy()`, sesi langsung mati | Token tetap valid sampai `exp` kecuali ada denylist/revocation |
+| Cocok untuk | Web tradisional same-origin (proyek ini) | API stateless, mobile, multi-client |
