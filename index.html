@@ -176,6 +176,128 @@
       <div id="api-output" class="services-grid" aria-busy="false"></div>
     </section>
 
+    <!-- ===== MODUL 12: AKUN (LOGIN / REGISTER / LOGOUT) ===== -->
+    <section id="auth-section">
+      <h2>Akun</h2>
+      <div id="user-bar" hidden>
+        <p>Masuk sebagai <strong id="user-name"></strong> (peran: <span id="user-role"></span>)</p>
+        <button type="button" id="logout-btn" class="btn-detail">Keluar</button>
+      </div>
+
+      <div id="guest-box" class="auth-grid">
+        <form id="login-form" novalidate>
+          <h3>Masuk</h3>
+          <div class="form-group">
+            <label for="login-email">Email</label>
+            <input type="email" id="login-email" autocomplete="username">
+          </div>
+          <div class="form-group">
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" autocomplete="current-password">
+          </div>
+          <button type="submit" class="btn-detail">Masuk</button>
+        </form>
+
+        <form id="register-form" novalidate>
+          <h3>Daftar akun baru</h3>
+          <div class="form-group">
+            <label for="reg-nama">Nama</label>
+            <input type="text" id="reg-nama" autocomplete="name">
+          </div>
+          <div class="form-group">
+            <label for="reg-email">Email</label>
+            <input type="email" id="reg-email" autocomplete="email">
+          </div>
+          <div class="form-group">
+            <label for="reg-password">Password (min. 8 karakter)</label>
+            <input type="password" id="reg-password" autocomplete="new-password">
+          </div>
+          <button type="submit" class="btn-detail">Daftar</button>
+        </form>
+      </div>
+
+      <p id="auth-status" role="status" aria-live="polite"></p>
+    </section>
+
+    <!-- ===== MODUL 11: CRUD FULL-STACK ===== -->
+    <section id="crud-section" hidden>
+      <h2>Kelola Data Alat (CRUD)</h2>
+      <p>Data tersimpan di database MySQL melalui REST API.</p>
+
+      <form id="crud-form" novalidate>
+        <input type="hidden" id="crud-id">
+
+        <div class="form-group">
+          <label for="crud-nama">Nama alat *</label>
+          <input type="text" id="crud-nama" autocomplete="off" aria-describedby="crud-error-nama">
+          <small id="crud-error-nama" class="error" aria-live="polite"></small>
+        </div>
+
+        <div class="form-group">
+          <label for="crud-kategori">Kategori *</label>
+          <select id="crud-kategori" aria-describedby="crud-error-kategori">
+            <option value="">-- Pilih kategori --</option>
+            <option>Mikrokontroler</option>
+            <option>Pengukuran</option>
+            <option>Jaringan</option>
+            <option>Hardware</option>
+          </select>
+          <small id="crud-error-kategori" class="error" aria-live="polite"></small>
+        </div>
+
+        <div class="form-group">
+          <label for="crud-jumlah">Jumlah *</label>
+          <input type="number" id="crud-jumlah" step="1" aria-describedby="crud-error-jumlah">
+          <small id="crud-error-jumlah" class="error" aria-live="polite"></small>
+        </div>
+
+        <div class="form-group">
+          <label for="crud-kondisi">Kondisi *</label>
+          <select id="crud-kondisi" aria-describedby="crud-error-kondisi">
+            <option>Baik</option>
+            <option>Perlu Cek</option>
+            <option>Rusak</option>
+          </select>
+          <small id="crud-error-kondisi" class="error" aria-live="polite"></small>
+        </div>
+
+        <div class="crud-actions">
+          <button type="submit" id="crud-submit" class="btn-detail">Simpan</button>
+          <button type="button" id="crud-cancel" class="btn-detail" hidden>Batal Edit</button>
+        </div>
+      </form>
+
+      <p id="crud-status" role="status" aria-live="polite"></p>
+
+      <div class="crud-toolbar">
+        <input type="search" id="crud-search" placeholder="Cari nama alat..." aria-label="Cari nama alat">
+        <select id="crud-filter" aria-label="Filter kategori">
+          <option value="">Semua kategori</option>
+          <option>Mikrokontroler</option>
+          <option>Pengukuran</option>
+          <option>Jaringan</option>
+          <option>Hardware</option>
+        </select>
+      </div>
+
+      <p id="crud-loading" hidden>Memuat data...</p>
+      <div class="crud-table-wrap">
+        <table class="crud-table">
+          <thead>
+            <tr><th>ID</th><th>Nama</th><th>Kategori</th><th>Jumlah</th><th>Kondisi</th><th>Aksi</th></tr>
+          </thead>
+          <tbody id="crud-tbody"></tbody>
+        </table>
+      </div>
+      <p id="crud-empty" hidden>Tidak ada data yang cocok.</p>
+
+      <div class="crud-pager">
+        <button type="button" id="crud-prev" class="btn-detail">« Sebelumnya</button>
+        <span id="crud-pageinfo"></span>
+        <button type="button" id="crud-next" class="btn-detail">Berikutnya »</button>
+      </div>
+    </section>    
+
  <section id="layanan">
       <h2>Layanan Utama Kami</h2>
       
@@ -229,5 +351,7 @@
   </footer>
 
   <script type="module" src="js/app.js"></script>
+  <script type="module" src="js/crud.js"></script>
+  <script type="module" src="js/auth.js"></script>
 </body>
 </html>

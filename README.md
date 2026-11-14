@@ -88,3 +88,42 @@ sequenceDiagram
 | Penyimpanan di client | Cookie `PHPSESSID` (HttpOnly, tidak terbaca JS) | Memory/storage; perlu dirancang aman |
 | Logout | Mudah: `session_destroy()`, sesi langsung mati | Token tetap valid sampai `exp` kecuali ada denylist/revocation |
 | Cocok untuk | Web tradisional same-origin (proyek ini) | API stateless, mobile, multi-client |
+
+## Endpoint Autentikasi & Sesi (Modul 12)
+
+| Method | Path | Tujuan | Body | Sukses | Gagal |
+|---|---|---|---|---|---|
+| POST | /api/register.php | Daftar akun (role viewer) | nama, email, password | 201 | 405, 409, 422, 500 |
+| POST | /api/login.php | Login, buat session | email, password | 200 | 400, 401, 405, 500 |
+| POST | /api/logout.php | Akhiri session | – | 200 | 405, 500 |
+| GET | /api/me.php | Profil user login | – | 200 | 401, 500 |
+
+## Role / Authorization Matrix
+
+| Endpoint | Anonymous | Viewer | Petugas | Admin |
+|---|:-:|:-:|:-:|:-:|
+| POST /api/register.php | ✓ | ✓ | ✓ | ✓ |
+| POST /api/login.php | ✓ | ✓ | ✓ | ✓ |
+| POST /api/logout.php | ✓ | ✓ | ✓ | ✓ |
+| GET /api/me.php | 401 | ✓ | ✓ | ✓ |
+| GET /api/alats.php | 401 | ✓ | ✓ | ✓ |
+| POST /api/alats.php | 401 | 403 | ✓ | ✓ |
+| PUT/PATCH /api/alats.php?id= | 401 | 403 | ✓ | ✓ |
+| DELETE /api/alats.php?id= | 401 | 403 | 403 | ✓ |
+
+**Justifikasi:** aplikasi inventaris lab punya tiga peran dengan tanggung jawab berbeda. Viewer (mahasiswa) hanya melihat ketersediaan alat. Petugas (asisten lab) mencatat dan memperbarui data alat. Admin (dosen/laboran) memegang hak tertinggi termasuk menghapus data, karena penghapusan tidak dapat dibatalkan. Registrasi publik selalu menghasilkan role `viewer`; role petugas/admin hanya diberikan lewat seed/database. Semua pengecekan dilakukan di server (`requireLogin()` dan `requireRole()`), UI hanya menyembunyikan tombol untuk kenyamanan.
+
+## Bukti Skenario Akses (Modul 12)
+
+| # | Skenario | Role | Request | Harapan | Hasil aktual | Screenshot |
+|---|---|---|---|---|---|---|
+| 1 | Anonymous baca data | – | GET alats.php | 401 | 401 Unauthorized (`UNAUTHENTICATED`: Silakan login terlebih dahulu) | `ss-01-anon-baca.png` |
+| 2 | Login salah | – | POST login.php | 401 | 401 Unauthorized (`INVALID_CREDENTIALS`: Email atau password salah) | `ss-02-login-salah.png` |
+| 3 | Viewer baca | viewer | GET alats.php | 200 | 200 OK (Data daftar alat tampil beserta total halaman) | `ss-03-viewer-baca.png` |
+| 4 | Viewer tambah | viewer | POST alats.php | 403 | 403 Forbidden (`FORBIDDEN`: Akses ditolak, peran tidak memiliki izin) | `ss-04-viewer-tambah.png` |
+| 5 | Petugas tambah | petugas | POST alats.php | 201 | 201 Created (Data alat baru berhasil ditambahkan) | `ss-05-petugas-tambah.png` |
+| 6 | Petugas hapus | petugas | DELETE alats.php | 403 | 403 Forbidden (`FORBIDDEN`: Akses ditolak, peran tidak memiliki izin) | `ss-06-petugas-hapus.png` |
+| 7 | Admin hapus | admin | DELETE alats.php | 204 | 204 No Content (Data alat berhasil dihapus oleh admin) | `ss-07-admin-hapus.png` |
+| 8 | Akses setelah logout | – | GET alats.php | 401 | 401 Unauthorized (`UNAUTHENTICATED`: Sesi berakhir setelah logout) | `ss-08-akses-setelah-logout.png` |
+| 9 | Register valid | – | POST register.php | 201 | 201 Created (Akun dibuat dengan `role: viewer`, tanpa `password_hash`) | `ss-09-register-valid.png` |
+| 10 | Register email ganda | – | POST register.php | 409 | 409 Conflict (`CONFLICT`: Email sudah terdaftar) | `ss-10-register-duplikat.png` |
