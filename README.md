@@ -127,3 +127,9 @@ sequenceDiagram
 | 8 | Akses setelah logout | – | GET alats.php | 401 | 401 Unauthorized (`UNAUTHENTICATED`: Sesi berakhir setelah logout) | `ss-08-akses-setelah-logout.png` |
 | 9 | Register valid | – | POST register.php | 201 | 201 Created (Akun dibuat dengan `role: viewer`, tanpa `password_hash`) | `ss-09-register-valid.png` |
 | 10 | Register email ganda | – | POST register.php | 409 | 409 Conflict (`CONFLICT`: Email sudah terdaftar) | `ss-10-register-duplikat.png` |
+
+### Cara Menjalankan Proyek:
+1. Clone repository ini ke komputer lokalmu.
+2. Salin file `.env.example` dan ubah namanya menjadi `.env`, lalu sesuaikan konfigurasi database (`DB_USER` dan `DB_PASS`) sesuai akun lokalmu.
+3. Jalankan perintah `composer install` di terminal untuk mengunduh pustaka *vendor*.
+4. Jalankan server lokal (Laragon) dan akses proyek melalui browser atau Postman.
