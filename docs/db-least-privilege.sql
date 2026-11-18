@@ -1,0 +1,5 @@
+CREATE USER 'weblab_app'@'localhost' IDENTIFIED BY 'GANTI_PASSWORD';
+CREATE USER 'weblab_app'@'127.0.0.1' IDENTIFIED BY 'GANTI_PASSWORD';
+GRANT SELECT, INSERT, UPDATE, DELETE ON pemweb_obe.* TO 'weblab_app'@'localhost';
+GRANT SELECT, INSERT, UPDATE, DELETE ON pemweb_obe.* TO 'weblab_app'@'127.0.0.1';
+FLUSH PRIVILEGES;
