@@ -133,3 +133,34 @@ sequenceDiagram
 2. Salin file `.env.example` dan ubah namanya menjadi `.env`, lalu sesuaikan konfigurasi database (`DB_USER` dan `DB_PASS`) sesuai akun lokalmu.
 3. Jalankan perintah `composer install` di terminal untuk mengunduh pustaka *vendor*.
 4. Jalankan server lokal (Laragon) dan akses proyek melalui browser atau Postman.
+
+## Latihan Modul 13 (Security Review & Remediation)
+
+### Latihan 1: Tiga Titik Input dan Tiga Titik Output
+
+#### **Tabel Titik Input**
+| Titik Input | Lokasi | Kontrol Keamanan |
+| :--- | :--- | :--- |
+| Form tambah/ubah alat (nama, kategori, jumlah, kondisi) | `crud.js` $\rightarrow$ `alats.php` (POST/PUT) | Validasi server (422), *prepared statement* |
+| Query string (`q`, `kategori`, `page`, `limit`, `id`) | `GET alats.php` | Validasi integer, *placeholder*, pembatasan *limit* |
+| Form login/register (email, password, nama) | `auth.js` $\rightarrow$ `login.php` / `register.php` | Validasi input, *prepared statement*, `password_hash` |
+
+#### **Tabel Titik Output**
+| Titik Output | Lokasi | Kontrol Keamanan |
+| :--- | :--- | :--- |
+| Tabel data alat | `crud.js` (renderTable) | Render aman menggunakan `textContent` |
+| Pesan status/error dan nama user | `crud.js`, `auth.js` | Render aman menggunakan `textContent` |
+| Kartu data API publik | `app.js` (renderUsers) | Render aman menggunakan `textContent` (data eksternal tidak tepercaya) |
+
+---
+
+### Latihan 2: Pengujian Peran Viewer & Request Manual (DELETE)
+- Verifikasi pembatasan hak akses di mana user dengan peran *viewer* dilarang melakukan modifikasi data.
+- Percobaan *request* manual `DELETE` (baik melalui Postman maupun *Console* browser dengan atau tanpa token) akan ditolak oleh server dengan status **`403 Forbidden`**.
+
+---
+
+### Latihan 3: Secret Management & Strategi Keamanan
+- Kredensial sensitif seperti `DB_USER` dan `DB_PASS` pada file `.env` disembunyikan menggunakan `.gitignore`.
+- Repositori publik hanya mengunggah file templat `.env.example`.
+- Aplikasi menggunakan akun basis data khusus berhak akses minimum (`weblab_app`) bukan `root`, serta mengganti kredensial lama yang sempat terekspos.
