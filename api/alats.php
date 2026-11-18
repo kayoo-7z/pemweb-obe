@@ -121,6 +121,7 @@ try {
     // ----------------------------------------------------
     if ($method === 'POST') {
         requireRole(['admin', 'petugas']);
+        requireCsrf();
         $payload = json_decode(file_get_contents('php://input'), true) ?? $_POST;
 
         $nama     = trim((string)($payload['nama'] ?? ''));
@@ -165,6 +166,7 @@ try {
     // ----------------------------------------------------
     if ($method === 'PUT' || $method === 'PATCH') {
         requireRole(['admin', 'petugas']);
+        requireCsrf();
         if (!isset($_GET['id']) || $idParam === false || $idParam <= 0) {
             jsonError(400, 'BAD_REQUEST', 'ID alat wajib disertakan dan harus valid');
         }
@@ -215,6 +217,7 @@ try {
     // ----------------------------------------------------
     if ($method === 'DELETE') {
         requireRole(['admin']);
+        requireCsrf();
         if (!isset($_GET['id']) || $idParam === false || $idParam <= 0) {
             jsonError(400, 'BAD_REQUEST', 'ID alat wajib disertakan dan harus valid');
         }

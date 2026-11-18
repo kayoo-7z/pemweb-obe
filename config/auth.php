@@ -50,3 +50,21 @@ function requireRole(array $roles): void {
         authError(403, 'FORBIDDEN', 'Akses ditolak: peran Anda tidak memiliki izin untuk aksi ini');
     }
 }
+
+// ===== MODUL 13: CSRF =====
+function csrfToken(): string {
+    startSecureSession();
+    if (empty($_SESSION['csrf'])) {
+        $_SESSION['csrf'] = bin2hex(random_bytes(32));
+    }
+    return $_SESSION['csrf'];
+}
+
+function requireCsrf(): void {
+    startSecureSession();
+    $sent     = $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '';
+    $expected = $_SESSION['csrf'] ?? '';
+    if ($expected === '' || !is_string($sent) || !hash_equals($expected, $sent)) {
+        authError(403, 'CSRF_INVALID', 'Permintaan tidak valid (token CSRF salah atau tidak ada)');
+    }
+}

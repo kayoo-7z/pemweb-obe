@@ -9,6 +9,10 @@ try {
     }
 
     startSecureSession();
+    if (!empty($_SESSION['user_id'])) {
+        requireCsrf();
+    }
+
     $_SESSION = [];
 
     if (ini_get('session.use_cookies')) {

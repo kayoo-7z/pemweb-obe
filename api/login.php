@@ -31,15 +31,17 @@ try {
     session_regenerate_id(true);            // cegah session fixation
     $_SESSION['user_id'] = (int)$user['id'];
     $_SESSION['role']    = $user['role'];
+    $_SESSION['csrf']    = bin2hex(random_bytes(32));   // BARU: token baru per login
 
     authJson(200, [
         'success' => true,
         'message' => 'Login berhasil',
         'data'    => [
-            'id'    => (int)$user['id'],
-            'nama'  => $user['nama'],
-            'email' => $user['email'],
-            'role'  => $user['role']
+            'id'         => (int)$user['id'],
+            'nama'       => $user['nama'],
+            'email'      => $user['email'],
+            'role'       => $user['role'],
+            'csrf_token' => $_SESSION['csrf']            // BARU
         ]
     ]);
 } catch (Throwable $e) {

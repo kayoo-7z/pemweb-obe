@@ -22,6 +22,7 @@ async function apiRequest(url, options = {}) {
     credentials: 'same-origin',
     headers: {
       Accept: 'application/json',
+      ...(options.method && options.method !== 'GET' ? { 'X-CSRF-Token': currentUser?.csrf_token ?? '' } : {}),
       ...(options.body ? { 'Content-Type': 'application/json' } : {})
     }
   });

@@ -22,6 +22,7 @@ try {
         authError(401, 'UNAUTHENTICATED', 'Sesi tidak valid, silakan login ulang');
     }
 
+    $user['csrf_token'] = csrfToken();   // supaya halaman yang di-refresh tetap dapat token
     authJson(200, ['success' => true, 'data' => $user]);
 } catch (Throwable $e) {
     error_log((string)$e);

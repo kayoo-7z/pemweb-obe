@@ -1,5 +1,6 @@
 // js/auth.js - MODUL 12: login, register, logout (berbasis session)
 const API = './api';
+let csrf = '';
 const $ = s => document.querySelector(s);
 
 const el = {
@@ -23,7 +24,11 @@ async function post(path, body) {
   const res = await fetch(`${API}/${path}`, {
     method: 'POST',
     credentials: 'same-origin',
-    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      ...(csrf ? { 'X-CSRF-Token': csrf } : {})
+    },
     body: body ? JSON.stringify(body) : undefined
   });
   const payload = await res.json().catch(() => null);
@@ -38,6 +43,7 @@ async function post(path, body) {
 
 // Satu pintu untuk mengubah tampilan sesuai status login
 function render(user) {
+  csrf = user?.csrf_token ?? '';
   el.guest.hidden = Boolean(user);
   el.userBar.hidden = !user;
   if (user) {
